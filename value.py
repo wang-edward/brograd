@@ -41,17 +41,31 @@ class Value:
     out._backward = _backward
     return out
 
+  def __rpow__(self, other):
+    assert isinstance(other, (int, float))
+    out = Value(other ** self.data, (self, ), f'**{other}')
+    def _backward():
+      self.grad += math.log(other) * other**self.data * out.grad
+    out._backward = _backward
+    return out
+
   def __rmul__(self, other):
     return self * other
 
   def __truediv__(self, other):
     return self * other**-1
 
+  def __rtruediv__(self, other):
+    return Value(other) / self
+
   def __neg__(self):
     return self * -1
 
   def __sub__(self, other):
     return self + (-other)
+
+  def __rsub__(self, other):
+    return Value(other) - self
     
   def tanh(self):
     x = self.data
