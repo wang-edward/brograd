@@ -1,7 +1,7 @@
 import numpy as np
 
 class Tensor:
-  def __init__(self, data: np.ndarray, _children=(),op='', label=''):
+  def __init__(self, data, _children=(),op='', label=''):
     self.data = np.asarray(data, dtype=float)
     self.grad = np.zeros_like(self.data)
     self._backward = lambda: None
