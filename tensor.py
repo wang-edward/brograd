@@ -12,6 +12,12 @@ class Tensor:
   def __repr__(self):
     return f'Tensor(data={self.data})'
 
+  def __eq__(self, other):
+    return bool(np.array_equal(self.data, other.data))
+
+  def __hash__(self):
+    return hash((self.data.shape, self.data.tobytes()))
+
   def __add__(self, other):
     other = other if isinstance(other, Tensor) else Tensor(other)
     out = Tensor(self.data + other.data, (self, other), '+')
